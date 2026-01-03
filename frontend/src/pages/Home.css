@@ -1,0 +1,102 @@
+/* ===== HERO SECTION ===== */
+.hero-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  background: var(--bg-color);
+  transition: background 0.3s ease;
+}
+
+.hero-content {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+}
+
+.hero-greeting {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+/* ===== ACTIONS ===== */
+.hero-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* .hero-search {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.hero-search::placeholder {
+  color: var(--text-muted);
+} */
+
+/* ===== DARK / LIGHT VARIABLES ===== */
+body {
+  --input-bg: #ffffff;
+}
+
+body.dark-mode {
+  --input-bg: #020617;
+}
+
+
+/* .hero-section {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 40px;
+  border: 6px solid var(--border-color);
+  clip-path: ellipse(120% 100% at 20% 50%);
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.hero-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px 30px;
+}
+
+#typingGreeting {
+  font-size: 2.3rem;
+  font-weight: 600;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+  transition: color 0.3s ease;
+} */
