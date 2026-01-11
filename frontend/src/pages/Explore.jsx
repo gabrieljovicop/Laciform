@@ -6,6 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 
 import SearchBar from "../components/SearchBar";
+import LoginPromptModal from "../components/LoginPromptModal";
 
 import "./Explore.css";
 
@@ -25,6 +26,7 @@ function Explore () {
   
   const [showModal, setShowModal] = useState(false);
   const [selectedForm, setSelectedForm] = useState(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   useEffect(() => {
     const fetchPublicForms = async () => {
@@ -77,7 +79,7 @@ function Explore () {
     e.stopPropagation();
     
     if (!currentUser) {
-      alert("Silakan login terlebih dahulu untuk memberikan like!");
+      setShowLoginPrompt(true);
       return;
     }
 
@@ -229,6 +231,11 @@ function Explore () {
           </>
         )}
       </Modal>
+
+      <LoginPromptModal
+        show={showLoginPrompt}
+        handleClose={() => setShowLoginPrompt(false)}
+      />
     </div>
   );
 }

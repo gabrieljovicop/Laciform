@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
-import { db } from "../firebase"; // HANYA import db (Hapus import storage)
+import { db } from "../firebase";
 import { collection, addDoc, Timestamp } from "firebase/firestore"; 
 import { useAuth } from "../contexts/AuthContext";
+
+import ConfirmModal from "../components/modals/ConfirmModal";
 
 import "./Create.css";
 
@@ -15,10 +17,14 @@ function AddForm () {
   const [isPublic, setIsPublic] = useState(true);
 
   const [loading, setLoading] = useState(false); 
+  const [isDirty, setIsDirty] = useState(false);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
   function toggleTag(tag) {
+    setIsDirty(true);
     setTags(prev =>
       prev.includes(tag)
       ? prev.filter(t => t !== tag)
@@ -69,6 +75,7 @@ function AddForm () {
       await addDoc(formsCollectionRef, newForm);
 
       alert("Form berhasil disimpan!");
+      setIsDirty(false);
       navigate("/create"); 
 
     } catch (error) {
@@ -81,20 +88,45 @@ function AddForm () {
 
   return (
     <div className="add-form-page page-content">
+      <div className="form-page-header">
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => {
+            if (isDirty) setShowLeaveConfirm(true);
+            else navigate(-1);
+          }}
+        >
+          ← Kembali
+        </button>
 
-      <h2 style={{ textAlign: "center"}}>Create New Form</h2>
+        <h2 className="form-page-title">Buat Form Baru</h2>
+      </div>
+
       <form className="add-form-container form-container" onSubmit={handleSubmit}>
         <label>Judul Form</label>
-        <input type="text" placeholder="Masukkan judul form" value={title} onChange={e => setTitle(e.target.value)} 
-          className="form-input-custom"/>
+        <input type="text" placeholder="Masukkan judul form" value={title} 
+        onChange={e => {
+          setTitle(e.target.value);
+          setIsDirty(true);
+        }} 
+        className="form-input-custom" />
 
         <label>Deskripsi Form</label>
-        <textarea placeholder="Masukkan deskripsi form" value={desc} onChange={e => setDesc(e.target.value)} 
-          className="form-input-custom"/>
+        <textarea placeholder="Masukkan deskripsi form" value={desc}
+        onChange={e => {
+          setDesc(e.target.value);
+          setIsDirty(true);
+        }}  
+        className="form-input-custom" />
           
         <label>Link Form</label>
-        <input placeholder="https://..." value={link} onChange={e => setLink(e.target.value)} 
-          className="form-input-custom"/>
+        <input placeholder="https://..." value={link}
+        onChange={e => {
+          setLink(e.target.value);
+          setIsDirty(true);
+        }} 
+        className="form-input-custom" />
 
         <label>Pilih Tags Kategori</label>
         <div className="tag-options">
@@ -106,7 +138,11 @@ function AddForm () {
         </div>
 
         <label>Gambar Thumbnail</label>
-        <input type="file" accept="image/*" onChange={handleUpload} />
+        <input type="file" accept="image/*" 
+        onChange={e => {
+          handleUpload(e);
+          setIsDirty(true);
+        }} />
 
         {thumbnailUrl && (
           <div className="image-preview">
@@ -115,7 +151,11 @@ function AddForm () {
         )}
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "15px" }}>
-          <input type="checkbox" id="isPublic" checked={isPublic} onChange={e => setIsPublic(e.target.checked)} />
+          <input type="checkbox" id="isPublic" checked={isPublic} 
+          onChange={e => {
+            setIsPublic(e.target.checked);
+            setIsDirty(true);
+          }} />
           <label htmlFor="isPublic" style={{ margin: 0 }}>Tampilkan di Halaman Explore (Publik)</label>
         </div>
 
@@ -124,6 +164,15 @@ function AddForm () {
         </button>
       </form>
 
+      <ConfirmModal
+        show={showLeaveConfirm}
+        onClose={() => setShowLeaveConfirm(false)}
+        onConfirm={() => navigate(-1)}
+        title="Perubahan belum disimpan"
+        message="Perubahan yang Anda buat belum disimpan. Yakin ingin keluar?"
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+      />
 
     </div>
   );

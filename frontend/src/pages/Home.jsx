@@ -51,18 +51,39 @@ function Home () {
       </section>
       
       <section className="info-section">
-        <h2>Apa itu Laciform?</h2>
-        <p>
-          Laciform adalah platform berbagi formulir secara publik tanpa perlu link khusus.
-          Setiap orang dapat menemukan dan mengisi formulir sesuai kebutuhan.
-        </p>
+        <div className="info-container">
+          
+          <div className="info-about-card">
+            <h2>Apa itu Laciform?</h2>
+            <p>
+              Laciform adalah platform berbagi formulir secara publik tanpa perlu link khusus.
+              Setiap orang dapat menemukan dan mengisi formulir sesuai kebutuhan.
+            </p>
+          </div>
 
-        <h3>Apa yang bisa dilakukan?</h3>
-        <ul>
-          <li>Mencari formulir publik</li>
-          <li>Membuat dan membagikan formulir sendiri</li>
-          <li>Mengelola respons dengan mudah</li>
-        </ul>
+          <h3 className="info-feature-title">Apa yang bisa dilakukan?</h3>
+
+          <div className="info-feature-grid">
+            <div className="info-feature-card">
+              <div className="info-icon">🔍</div>
+              <h4>Mencari Form Publik</h4>
+              <p>Temukan berbagai formulir publik dengan cepat dan mudah.</p>
+            </div>
+
+            <div className="info-feature-card">
+              <div className="info-icon">✍️</div>
+              <h4>Membuat & Membagikan</h4>
+              <p>Buat formulir sendiri dan bagikan ke siapa saja.</p>
+            </div>
+
+            <div className="info-feature-card">
+              <div className="info-icon">📊</div>
+              <h4>Kelola Respons</h4>
+              <p>Lihat dan kelola semua jawaban secara terpusat.</p>
+            </div>
+          </div>
+
+        </div>
       </section>
 
       <Footer />

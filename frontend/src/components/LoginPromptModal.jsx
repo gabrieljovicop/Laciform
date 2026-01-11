@@ -1,5 +1,4 @@
-import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const LoginPromptModal = ({ show, handleClose }) => {
@@ -11,7 +10,7 @@ const LoginPromptModal = ({ show, handleClose }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
+    <Modal show={show} onHide={handleClose} centered contentClassName="custom-modal">
       <Modal.Header closeButton>
         <Modal.Title>Akses Terbatas</Modal.Title>
       </Modal.Header>
@@ -19,12 +18,12 @@ const LoginPromptModal = ({ show, handleClose }) => {
         <p>Anda harus login atau mendaftar untuk melanjutkan tindakan ini (misalnya: membuat, menyimpan, atau menyukai konten).</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <button className="btn-secondary" onClick={handleClose}>
           Tutup
-        </Button>
-        <Button variant="primary" onClick={handleRedirectToLogin}>
+        </button>
+        <button className="btn-primary" onClick={handleRedirectToLogin}>
           Login Sekarang
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

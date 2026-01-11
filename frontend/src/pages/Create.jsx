@@ -117,7 +117,6 @@ function Create () {
       )}
 
       <div className="form-grid">
-        {/* Card Add Form - Tetap di posisi pertama */}
         <Link to="/create/add" className="add-form-card">
           <div className="add-form-inner">
             <div className="plus-icon">+</div>

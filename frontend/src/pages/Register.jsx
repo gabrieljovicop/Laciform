@@ -26,14 +26,11 @@ const Register = () => {
     }
 
     try {
-      // Panggil fungsi Firebase untuk membuat akun baru
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      
-      // Akun berhasil dibuat
+
       console.log("User registered:", userCredential.user);
       setSuccess("Pendaftaran berhasil! Silakan login.");
       
-      // Opsional: kosongkan form
       setEmail("");
       setPassword("");
       setConfirmPassword("");

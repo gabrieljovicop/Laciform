@@ -1,24 +1,27 @@
-// src/firebase.js
-
 import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-// Objek konfigurasi yang didapatkan dari Firebase Console
-const firebaseConfig = {
-  apiKey: "AIzaSyB1dyXosG8ZB5isjZFHFY2JhIHy2yXDlpk",
-  authDomain: "laciform.firebaseapp.com",
-  databaseURL: "https://laciform-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "laciform",
-  storageBucket: "laciform.firebasestorage.app",
-  messagingSenderId: "757408681322",
-  appId: "1:757408681322:web:796311f3b435e4cb44a913",
-  measurementId: "G-B4QLJHVJM8"
-};
+function requiredEnv(key) {
+  const value = import.meta.env[key];
+  if (!value) {
+    throw new Error(`Missing environment variable: ${key}`);
+  }
+  return value;
+}
 
-const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+export function getFirebaseConfig() {
+  return {
+    apiKey: requiredEnv("VITE_FIREBASE_API_KEY"),
+    authDomain: requiredEnv("VITE_FIREBASE_AUTH_DOMAIN"),
+    projectId: requiredEnv("VITE_FIREBASE_PROJECT_ID"),
+    storageBucket: requiredEnv("VITE_FIREBASE_STORAGE_BUCKET"),
+    messagingSenderId: requiredEnv("VITE_FIREBASE_MESSAGING_SENDER_ID"),
+    appId: requiredEnv("VITE_FIREBASE_APP_ID")
+  };
+}
+
+const app = initializeApp(getFirebaseConfig());
 
 export const db = getFirestore(app);
 export const auth = getAuth(app);

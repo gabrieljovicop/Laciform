@@ -19,17 +19,14 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Panggil fungsi Firebase untuk login
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
-      // Login berhasil
       console.log("User logged in:", userCredential.user);
       setMessage("Selamat datang, ${userCredential.user.email}! Anda berhasil login.");
       
       navigate("/");
       
     } catch (err) {
-      // Tangani error dari Firebase (misalnya: "auth/user-not-found", "auth/wrong-password")
       console.error(err.message);
       
       if (err.code === "auth/invalid-credential") {

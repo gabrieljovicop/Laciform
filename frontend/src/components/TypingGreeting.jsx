@@ -20,6 +20,7 @@ export default function TypingGreeting() {
   const [text, setText] = useState("");
   const [line, setLine] = useState(0);
   const [char, setChar] = useState(0);
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     if (line >= lines.length) return;
@@ -30,8 +31,16 @@ export default function TypingGreeting() {
       setChar(char + 1);
 
       if (char + 1 === current.length) {
-        setLine(line + 1);
-        setChar(0);
+        if (line === 0) {
+          setWaiting(true);
+
+          setTimeout(() => {
+            setText("");
+            setChar(0);
+            setLine(line + 1);
+            setWaiting(false);
+          }, 1000);
+        }
       }
     }, 50);
 

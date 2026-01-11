@@ -4,6 +4,8 @@ import { db } from "../firebase";
 import { doc, getDoc, updateDoc, deleteDoc, Timestamp } from "firebase/firestore"; 
 import { useAuth } from "../contexts/AuthContext";
 
+import ConfirmModal from "../components/modals/ConfirmModal";
+
 import "./Create.css";
 
 function EditForm () {
@@ -19,10 +21,11 @@ function EditForm () {
   const [isPublic, setIsPublic] = useState(true);
 
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true); // Loading saat memuat data awal
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isDirty, setIsDirty] = useState(false);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
 
-  // --- 1. LOGIC MUAT DATA AWAL (LOAD DATA) ---
   useEffect(() => {
     
     const fetchForm = async () => {
@@ -38,14 +41,12 @@ function EditForm () {
         if (docSnap.exists()) {
           const data = docSnap.data();
           
-          // Pastikan pengguna yang sedang login adalah pemilik form
           if (data.authorId !== currentUser.uid) {
             setError("Anda tidak memiliki izin untuk mengedit form ini.");
             navigate("/create");
             return;
           }
           
-          // Isi state dengan data dari Firestore
           setTitle(data.title || "");
           setDesc(data.description || "");
           setLink(data.formLink || "");
@@ -68,6 +69,7 @@ function EditForm () {
   }, [formId, currentUser, navigate]);
   
   function toggleTag(tag) {
+    setIsDirty(true);
     setTags(prev =>
       prev.includes(tag)
       ? prev.filter(t => t !== tag)
@@ -101,13 +103,13 @@ function EditForm () {
       formLink: link,
       tags: tags,
       isPublic: isPublic, 
-      updatedAt: Timestamp.now(), // Update waktu perubahan
+      updatedAt: Timestamp.now(),
       thumbnailUrl: thumbnailUrl,
     };
 
     try {
       const formDocRef = doc(db, "forms", formId);
-      await updateDoc(formDocRef, updatedData); // <-- Gunakan updateDoc
+      await updateDoc(formDocRef, updatedData);
 
       alert("Form berhasil diperbarui!");
       navigate("/create"); 
@@ -128,10 +130,10 @@ function EditForm () {
     setLoading(true);
     try {
         const formDocRef = doc(db, "forms", formId);
-        await deleteDoc(formDocRef); // <-- Hapus dokumen dari Firestore
+        await deleteDoc(formDocRef);
 
         alert("Form berhasil dihapus!");
-        navigate("/create"); // Redirect kembali ke halaman Create
+        navigate("/create");
 
     } catch (err) {
         console.error("Gagal menghapus form:", err);
@@ -141,24 +143,49 @@ function EditForm () {
     }
   };
 
-  // --- 3. RENDERING ---
   if (initialLoading) return <div className="loading-page"><p>Memuat form...</p></div>;
   if (error) return <div className="error-page"><p>{error}</p></div>;
 
   return (
     <div className="edit-form-page page-content">
-      <h2 style={{ textAlign: "center"}}>Edit Form: {title}</h2>
+      <div className="form-page-header">
+        <button
+          type="button"
+          className="back-button"
+          onClick={() => {
+            if (isDirty) setShowLeaveConfirm(true);
+            else navigate(-1);
+          }}
+        >
+          ← Kembali
+        </button>
+
+        <h2 className="form-page-title">Edit Form: {title}</h2>
+      </div>
+
       <form className="edit-form-container form-container" onSubmit={handleSubmit}>
         <label>Judul Form</label>
-        <input type="text" placeholder="Masukkan judul form" value={title} onChange={e => setTitle(e.target.value)} 
-          className="form-input-custom"/>
+        <input type="text" placeholder="Masukkan judul form" value={title} 
+        onChange={e => {
+          setTitle(e.target.value);
+          setIsDirty(true);
+        }} 
+        className="form-input-custom" />
         
         <label>Deskripsi Form</label>
-        <textarea placeholder="Masukkan deskripsi form" value={desc} onChange={e => setDesc(e.target.value)} 
+        <textarea placeholder="Masukkan deskripsi form" value={desc} 
+        onChange={e => {
+          setDesc(e.target.value);
+          setIsDirty(true);
+        }} 
           className="form-input-custom"/>
 
         <label>Link Form</label>
-        <input placeholder="https://..." value={link} onChange={e => setLink(e.target.value)} 
+        <input placeholder="https://..." value={link} 
+        onChange={e => {
+          setLink(e.target.value);
+          setIsDirty(true);
+        }} 
           className="form-input-custom"/>
 
         <label>Pilih Tags Kategori</label>
@@ -171,7 +198,11 @@ function EditForm () {
         </div>
 
         <label>Gambar Thumbnail</label>
-        <input type="file" accept="image/*" onChange={handleUpload} />
+        <input type="file" accept="image/*" 
+        onChange={e => {
+          handleUpload(e);
+          setIsDirty(true);
+        }} />
 
         {thumbnailUrl && (
           <div className="image-preview">
@@ -180,7 +211,11 @@ function EditForm () {
         )}
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "15px" }}>
-          <input type="checkbox" id="isPublic" checked={isPublic} onChange={e => setIsPublic(e.target.checked)} />
+          <input type="checkbox" id="isPublic" checked={isPublic} 
+          onChange={e => {
+            setIsPublic(e.target.checked);
+            setIsDirty(true);
+          }} />
           <label htmlFor="isPublic" style={{ margin: 0 }}>Tampilkan di Halaman Explore (Publik)</label>
         </div>
         
@@ -191,6 +226,17 @@ function EditForm () {
           {loading ? "Menghapus..." : "Hapus Form"}
         </button>
       </form>
+
+      <ConfirmModal
+        show={showLeaveConfirm}
+        onClose={() => setShowLeaveConfirm(false)}
+        onConfirm={() => navigate(-1)}
+        title="Perubahan belum disimpan"
+        message="Perubahan yang Anda buat belum disimpan. Yakin ingin keluar?"
+        confirmText="Ya, Keluar"
+        cancelText="Batal"
+      />
+
     </div>
   );
 }

@@ -161,13 +161,14 @@ button[disabled] {
 }
 
 .navbar-nav .nav-link {
+  position: relative;
   color: var(--btn-bg) !important;
-  font-size: 1.1rem;
-  transition: color 0.3s;
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+  padding-bottom: 6px;
 }
 
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:active {
+.navbar-nav .nav-link:hover {
   color: var(--btn-bg-hover) !important;
 }
 
@@ -177,17 +178,36 @@ button[disabled] {
     padding: 10px 20px !important;
 }
 
-/* Tangani hover state */
 .navbar-nav .nav-link.btn-primary:hover {
     color: var(--btn-text) !important; 
     background-color: var(--btn-bg-hover) !important;
 }
 
 /* ========= Active Link ========= */
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0px;
+  width: 0%;
+  height: 2px;
+  background-color: var(--border-color);
+  border-radius: 2px;
+  transition: width 0.25s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
 .navbar-nav .nav-link.active {
   color: var(--border-color) !important;
-  font-weight: bold;
-  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+}
+
+.navbar-nav .nav-link.active::after {
+  width: 100%;
 }
 
 /* ========= Collapse (Mobile Menu) ========= */
@@ -202,7 +222,7 @@ button[disabled] {
 }
 
 /* ========= Profile Picture & Label ========= */
-.pp-container {
+/* .pp-container {
   display: inline-block;
   width: 40px;
   aspect-ratio: 1 / 1;
@@ -220,7 +240,7 @@ button[disabled] {
 .profile-label {
   font-weight: 500;
   color: var(--btn-bg);
-}
+} */
 
 .page-content {
   padding: 8rem 4rem 4rem 4rem;
@@ -293,11 +313,10 @@ button[disabled] {
 }
 
 .form-input-custom {
-    /* Warna Dasar (Mengambil dari Tema) */
-    background-color: var(--bg-color); /* Latar belakang input sesuai tema */
-    color: var(--text-color); /* Warna teks input sesuai tema */
-    border: 1px solid #ccc; /* Border standar */
-    border-color: var(--border-color); /* Border warna default */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid #ccc;
+    border-color: var(--border-color);
     
     /* Layout dan Font */
     width: 100%;
@@ -310,16 +329,12 @@ button[disabled] {
 }
 
 .form-input-custom:focus {
-    /* Hapus outline default browser yang mengganggu */
     outline: none; 
-    
-    /* Berikan highlight visual yang jelas saat fokus */
-    border-color: var(--btn-bg); /* Gunakan warna tombol/aksen Anda saat fokus */
-    box-shadow: 0 0 0 3px rgba(57, 62, 70, 0.2); /* Shadow lembut */
+    border-color: var(--btn-bg);
+    box-shadow: 0 0 0 3px rgba(57, 62, 70, 0.2);
 }
 
 .dark-mode .form-input-custom {
-    /* Pastikan placeholder terlihat jelas di Dark Mode */
     border: 1px solid var(--border-color); 
 }
 
@@ -328,16 +343,15 @@ button[disabled] {
 }
 
 .form-input-custom::placeholder {
-    color: #888; /* Warna placeholder standar */
-    opacity: 1; /* Pastikan selalu terlihat */
+    color: #888;
+    opacity: 1;
 }
 .dark-mode .form-input-custom::placeholder {
-    color: #bbb; /* Placeholder lebih cerah di Dark Mode */
+    color: #bbb;
 }
 
 
 /* ========= Flex Item Styling ========= */
-/* Untuk elemen yang harus menempel di kiri dan tidak melebar */
 .flex-item-start {
   align-self: flex-start;
   width: auto;
@@ -349,6 +363,33 @@ button[disabled] {
   margin-top: 16px;
 }
 
+/* ========= Pop Up Modal ========= */
+
+.modal {
+  z-index: 2000 !important;
+}
+
+.modal-backdrop {
+  z-index: 1990 !important;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+}
+
+/* ========= Protected Page =========
+.protected-blur-wrapper {
+  position: relative;
+  z-index: 1000;
+}
+
+.protected-blur-content {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+} */
+
 /* ========= Responsive Tweaks ========= */
 @media (min-width: 768px) {
   .ms-auto {
@@ -356,9 +397,9 @@ button[disabled] {
     align-items: center;
   }
 
-  .profile-label {
+  /* .profile-label {
     display: none;
-  }
+  } */
 
   .no-border-conditional,
   .no-border-conditional:hover {
@@ -467,77 +508,3 @@ button[disabled] {
   text-align: center;
   font-size: 0.85rem;
 }
-
-
-/* footer {
-    background-color: #212529;
-    border-top: 1px solid #6a6a6a;
-} 
-
-.footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin: 20px;
-}
-
-.footer-item {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 calc(50% - 15px);
-    min-width: 0;
-}
-
-@media (max-width: 768px) {
-    .footer-item {
-        flex: 0 0 100%;
-    }
-}
-
-#footer-contacts h4,
-#footer-sosmed-list h4 {
-    color: #f8f2de;
-    margin-bottom: 10px;
-}
-
-#footer-contacts img,
-#footer-sosmed-list img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    object-fit: contain;
-}
-
-#footer-contacts ul,
-#footer-sosmed-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-#footer-contacts li,
-#footer-sosmed-list li {
-    margin-bottom: 12px;
-}
-
-#footer-contacts a,
-#footer-sosmed-list a {
-    color: #ccc;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: color 0.3s;
-    width: fit-content;
-}
-
-#footer-contacts a:hover,
-#footer-sosmed-list a:hover {
-    color: #ffd700cc;
-}
-
-#footer-bottom {
-    text-align: center;
-    border-top: 1px solid #6a6a6a;
-    padding-top: 15px;
-    font-size: 0.9em;
-    color: #aaa;
-} */

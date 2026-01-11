@@ -4,6 +4,30 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --base-font-scale: 1;
+}
+
+html {
+  font-size: calc(16px * var(--base-font-scale, 1));
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+.dyslexic-mode {
+  letter-spacing: 0.08em;
+  word-spacing: 0.16em;
+  line-height: 1.8;
+}
+
+.dyslexic-mode * {
+  font-family: "Arial", "Verdana", sans-serif !important;
 }
 
 .App {

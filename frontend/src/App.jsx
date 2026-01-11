@@ -7,11 +7,11 @@ import { NavLink, Routes, Route, useNavigate, useLocation } from "react-router-d
 
 // import { setupNavbarScroll } from "./utils/navigation";
 // import { getInitialTheme, setupThemeMode } from "./utils/accesibility";
-
 import { AuthProvider } from "./contexts/AuthContext";
 
 import MainLayout from "./layouts/MainLayout";
-import PrivateRoute from "./components/PrivateRoute";
+// import PrivateRoute from "./components/PrivateRoute";
+import ProtectedPage from "./components/ProtectedPage";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -31,14 +31,47 @@ function AppContent() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/create" element={<PrivateRoute element={<Create />} />} />
-        <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+
+        <Route
+          path="/create"
+          element={
+            <ProtectedPage>
+              <Create />
+            </ProtectedPage>
+          }
+        />
       </Route>
-      
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/create/add" element={<PrivateRoute element={<AddForm />} />} />
-      <Route path="/edit/:formId" element={<PrivateRoute element={<EditForm />} />} />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedPage>
+            <Profile />
+          </ProtectedPage>
+        }
+      />
+
+      <Route
+        path="/create/add"
+        element={
+          <ProtectedPage>
+            <AddForm />
+          </ProtectedPage>
+        }
+      />
+
+      <Route
+        path="/edit/:formId"
+        element={
+          <ProtectedPage>
+            <EditForm />
+          </ProtectedPage>
+        }
+      />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
