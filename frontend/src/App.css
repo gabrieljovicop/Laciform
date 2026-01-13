@@ -210,6 +210,22 @@ button[disabled] {
   width: 100%;
 }
 
+/* ========= NavLink No Border Condition ========= */
+/* ===== Disable underline for specific nav items (e.g. Login button) ===== */
+.navbar-nav .nav-link.no-border-condition::after {
+  display: none !important;
+}
+
+/* Also prevent hover effect changing underline width */
+.navbar-nav .nav-link.no-border-condition:hover::after {
+  width: 0 !important;
+}
+
+/* Optional: also prevent active underline */
+.navbar-nav .nav-link.no-border-condition.active::after {
+  width: 0 !important;
+}
+
 /* ========= Collapse (Mobile Menu) ========= */
 .navbar-collapse.collapse.show {
   background: var(--bg-color);
@@ -401,10 +417,10 @@ button[disabled] {
     display: none;
   } */
 
-  .no-border-conditional,
+  /* .no-border-conditional,
   .no-border-conditional:hover {
     border-bottom: none !important;
-  }
+  } */
 }
 
 @media (width < 768px) {

@@ -70,10 +70,10 @@ function SecuritySection() {
 
       {editing && (
         <>
-          <input type="password" placeholder="Password baru" value={newPass} onChange={e => setNewPass(e.target.value)} />
-
-          <input type="password" placeholder="Konfirmasi password baru" value={confirmPass} onChange={e => setConfirmPass(e.target.value)} />
-
+          <div className="form-group">
+            <input type="password" placeholder="Password baru" value={newPass} onChange={e => setNewPass(e.target.value)} />
+            <input type="password" placeholder="Konfirmasi password baru" value={confirmPass} onChange={e => setConfirmPass(e.target.value)} />
+          </div>
           <div className="profile-actions">
             <button className="btn-primary" onClick={handleSave} disabled={loading}>
               {loading ? "Menyimpan..." : "Simpan"}

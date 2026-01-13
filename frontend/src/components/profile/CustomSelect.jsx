@@ -21,7 +21,9 @@ function CustomSelect({ value, options, onChange, className = "" }) {
     <div className={`custom-select ${className}`} ref={wrapperRef}>
       <button type="button" className="custom-select-trigger" onClick={() => setOpen(v => !v)}>
         <span>{currentLabel}</span>
-        <span className={`arrow ${open ? "open" : ""}`}>▾</span>
+        <span className={`arrow ${open ? "open" : ""}`}>
+          <i class="fi fi-sr-caret-down"></i>
+        </span>
       </button>
 
       {open && (
